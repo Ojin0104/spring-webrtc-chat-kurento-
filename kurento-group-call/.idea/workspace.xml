@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2d17d190-447d-457a-8dd1-57600eb5ec31" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/k8s-deployment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/config/WebSocketConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/controller/ChatController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/controller/WebSocketEventListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/model/ChatMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/CallHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/CallHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/GroupCallApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/GroupCallApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/model/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/RoomManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/model/RoomManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/participant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/participant.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-hello-world/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-hello-world/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-hello-world/src/main/resources-filtered/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-hello-world/src/main/resources-filtered/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-hello-world/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-hello-world/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-one2many-call/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-one2many-call/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-one2many-call/src/main/resources/static/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-one2many-call/src/main/resources/static/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-one2one-call-advanced/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-one2one-call-advanced/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-one2one-call/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-one2one-call/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../kurento-rtp-receiver/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../kurento-rtp-receiver/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2FS45e5tQU8sLTGB9GjMdJDDBxI" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/s_hanyj0104/kurentodic/kurento-tutorial-java/kurento-one2many-call",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\s_hanyj0104\kurentodic\kurento-tutorial-java\kurento-group-call" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\s_hanyj0104\kurentodic\kurento-tutorial-java\kurento-group-call\src\main\resources" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2d17d190-447d-457a-8dd1-57600eb5ec31" name="Changes" comment="" />
+      <created>1664471969756</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1664471969756</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

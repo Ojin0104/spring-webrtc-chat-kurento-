@@ -83,8 +83,8 @@ public class Room implements Closeable {
   private Collection<String> joinRoom(UserSession newParticipant) throws IOException {
     final JsonObject newParticipantMsg = new JsonObject();
     newParticipantMsg.addProperty("id", "newParticipantArrived");
-    newParticipantMsg.addProperty("name", newParticipant.getName());
-
+    newParticipantMsg.addProperty("sender", newParticipant.getName());
+    newParticipantMsg.addProperty("content", "");
     final List<String> participantsList = new ArrayList<>(participants.values().size());
     log.debug("ROOM {}: notifying other participants of new participant {}", name,
         newParticipant.getName());
@@ -110,6 +110,7 @@ public class Room implements Closeable {
     final JsonObject participantLeftJson = new JsonObject();
     participantLeftJson.addProperty("id", "participantLeft");
     participantLeftJson.addProperty("name", name);
+    participantLeftJson.addProperty("content", "");
     for (final UserSession participant : participants.values()) {
       try {
         participant.cancelVideoFrom(name);
@@ -139,6 +140,8 @@ public class Room implements Closeable {
     final JsonObject existingParticipantsMsg = new JsonObject();
     existingParticipantsMsg.addProperty("id", "existingParticipants");
     existingParticipantsMsg.add("data", participantsArray);
+    existingParticipantsMsg.addProperty("sender",user.getName());
+    existingParticipantsMsg.addProperty("content","");
     log.debug("PARTICIPANT {}: sending a list of {} participants", user.getName(),
         participantsArray.size());
     user.sendMessage(existingParticipantsMsg);
@@ -180,5 +183,20 @@ public class Room implements Closeable {
 
     log.debug("Room {} closed", this.name);
   }
+public void sendChat(String name,String text) throws IOException{
+  final List<String> unnotifiedParticipants = new ArrayList<>();
+  final JsonObject participantLeftJson = new JsonObject();
+  participantLeftJson.addProperty("id", "sendChat");
+  participantLeftJson.addProperty("content", text);
+  participantLeftJson.addProperty("sender", name);
 
+  for (final UserSession participant : participants.values()) {
+    try {
+
+      participant.sendMessage(participantLeftJson);
+    } catch (final IOException e) {
+      unnotifiedParticipants.add(participant.getName());
+    }
+  }
+}
 }

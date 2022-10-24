@@ -62,8 +62,13 @@ public class CallHandler extends TextWebSocketHandler {
     } else {
       log.debug("Incoming message from new user: {}", jsonMessage);
     }
-
+    System.out.println(jsonMessage);
     switch (jsonMessage.get("id").getAsString()) {
+      case "sendChat":
+
+        sendChat(jsonMessage);
+
+        break;
       case "joinRoom":
         joinRoom(jsonMessage, session);
         break;
@@ -112,5 +117,17 @@ public class CallHandler extends TextWebSocketHandler {
     if (room.getParticipants().isEmpty()) {
       roomManager.removeRoom(room);
     }
+  }
+
+  private void sendChat(JsonObject params) throws IOException{
+    final String roomName = params.get("room").getAsString();
+    final String name = params.get("name").getAsString();
+    final String msg=params.get("text").getAsString();
+
+    log.info("PARTICIPANT {}: sendmessage {}", name, msg);
+    Room room=roomManager.getRoom(roomName);
+
+    room.sendChat(name,msg);
+
   }
 }

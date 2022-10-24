@@ -14,9 +14,11 @@
  * limitations under the License.
  *
  */
+var messageArea = document.querySelector('#messageArea');
+var connectingElement = document.querySelector('.connecting');
 
 
-var ws = new WebSocket('wss://' + location.host + '/groupcall');
+var ws = new WebSocket('wss://' + location.host + '/groupcall');//://' + location.host + '/groupcall
 var participants = {};
 var name;
 
@@ -25,23 +27,36 @@ window.onbeforeunload = function() {//페이지벗어날때
 };
 
 ws.onmessage = function(message) {
+console.log(message);
 	var parsedMessage = JSON.parse(message.data);
 	console.info('Received message: ' + message.data);
 
+
+
+
 	switch (parsedMessage.id) {
+	case 'sendChat':
+	receiveChat(parsedMessage);
+	break;
+
 	case 'existingParticipants':
 		onExistingParticipants(parsedMessage);
+
 		break;
 	case 'newParticipantArrived':
 		onNewParticipant(parsedMessage);
+
 		break;
 	case 'participantLeft':
 		onParticipantLeft(parsedMessage);
+
 		break;
 	case 'receiveVideoAnswer':
 		receiveVideoResponse(parsedMessage);
+
 		break;
 	case 'iceCandidate':
+	console.log(5);
 		participants[parsedMessage.name].rtcPeer.addIceCandidate(parsedMessage.candidate, function (error) {
 	        if (error) {
 		      console.error("Error adding candidate: " + error);
@@ -52,6 +67,8 @@ ws.onmessage = function(message) {
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
+
+
 }
 
 function register() {
@@ -72,10 +89,11 @@ function register() {
 	var room = document.getElementById('roomName').value;
     var chatPage=document.querySelector('#chat-page');
     /////////////추가 부분
-//    chatPage.classList.remove('hidden');
+    connectingElement.classList.add('hidden');
+    chatPage.classList.remove('hidden');
 //    var socket = new SockJS('/ws');
 //    stompClient = Stomp.over(socket);
-    //stompClient.connect({}, onConnected, onError);
+//    stompClient.connect({}, onConnected, onError);
     ////////////추가부분
 
 	document.getElementById('room-header').innerText = 'ROOM ' + room;
@@ -87,10 +105,14 @@ function register() {
 		name : name,
 		room : room,
 	}
+	console.log(message)
 	sendMessage(message);
 }
 
 function onNewParticipant(request) {
+    joinleftmsg(request,"join");
+
+
 	receiveVideo(request.name);
 }
 
@@ -111,7 +133,7 @@ function callResponse(message) {
 	}
 }
 
-function onExistingParticipants(msg) {
+function onExistingParticipants(message) {
 	var constraints = {
 		audio : true,
 		video : {
@@ -139,8 +161,11 @@ function onExistingParticipants(msg) {
 		  }
 		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
 	});
+	//추가
 
-	msg.data.forEach(receiveVideo);
+	joinleftmsg(message,"join");
+
+	message.data.forEach(receiveVideo);
 }
 
 function leaveRoom() {
@@ -179,6 +204,9 @@ function receiveVideo(sender) {
 
 function onParticipantLeft(request) {
 	console.log('Participant ' + request.name + ' left');
+	/////추가
+	joinleftmsg(request,"left");
+    /////
 	var participant = participants[request.name];
 	participant.dispose();
 	delete participants[request.name];
@@ -189,58 +217,29 @@ function sendMessage(message) {
 	console.log('Sending message: ' + jsonMessage);
 	ws.send(jsonMessage);
 }
+function sendChat(event){
+var room = document.getElementById('roomName').value;
+var messageInput = document.querySelector('#message');
+var messageContent=messageInput.value.trim();
+var message = {
+		id : 'sendChat',
+		name : name,
+		room : room,
+		text : messageContent,
+	}
+	console.log(message)
+	sendMessage(message);
 
-/////////////////추가된 부분
-function onConnected() {
-    // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
 
-    // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
-        {},
-        JSON.stringify({sender: name, type: 'JOIN'})
-    )
-
-    connectingElement.classList.add('hidden');
+	event.preventDefault();
 }
-function sendChat(event) {
-    var messageContent = messageInput.value.trim();
-
-    if(messageContent && stompClient) {
-        var chatMessage = {
-            sender: username,
-            content: messageInput.value,
-            type: 'CHAT'
-        };
-
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-        messageInput.value = '';
-    }
-    event.preventDefault();
-}
-
-function onError(error) {
-    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
-    connectingElement.style.color = 'red';
-}
-
-//확인
-function onMessageReceived(payload) {
-    var message = JSON.parse(payload.body);
-
-    var messageElement = document.createElement('li');
-
-    if(message.type === 'JOIN') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
-    } else if (message.type === 'LEAVE') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
-    } else {
+function receiveChat(message){
+        console.log('receiving message: ' + message);
+        var messageElement = document.createElement('li');
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);
+        var avatarText = document.createTextNode(message.sender[0]);//[0]
         avatarElement.appendChild(avatarText);
         avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
@@ -250,7 +249,7 @@ function onMessageReceived(payload) {
         var usernameText = document.createTextNode(message.sender);
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
-    }
+
         var textElement = document.createElement('p');
         var messageText = document.createTextNode(message.content);
         textElement.appendChild(messageText);
@@ -259,8 +258,95 @@ function onMessageReceived(payload) {
 
         messageArea.appendChild(messageElement);
         messageArea.scrollTop = messageArea.scrollHeight;
-    }
+}
 
+
+function joinleftmsg(message,type){
+
+	var messageElement = document.createElement('li');
+	messageElement.classList.add('event-message');
+    message.content = message.sender + ' '+type+'!';
+
+    var textElement = document.createElement('p');
+    var messageText = document.createTextNode(message.content);
+    textElement.appendChild(messageText);
+
+    messageElement.appendChild(textElement);
+
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+}
+/////////////////추가된 부분
+//function onConnected() {
+//    // Subscribe to the Public Topic
+//    stompClient.subscribe('/topic/public', onMessageReceived);
+//
+//    // Tell your username to the server
+//    stompClient.send("/app/chat.addUser",
+//        {},
+//        JSON.stringify({sender: name, type: 'JOIN'})
+//    )
+//
+//    connectingElement.classList.add('hidden');
+//}
+//function sendChat(event) {
+//    var messageContent = messageInput.value.trim();
+//
+//    if(messageContent && stompClient) {
+//        var chatMessage = {
+//            sender: username,
+//            content: messageInput.value,
+//            type: 'CHAT'
+//        };
+//
+//        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+//        messageInput.value = '';
+//    }
+//    event.preventDefault();
+//}
+//
+//function onError(error) {
+//    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
+//    connectingElement.style.color = 'red';
+//}
+//
+////확인
+//function onMessageReceived(payload) {
+//    var message = JSON.parse(payload.body);
+//
+//    var messageElement = document.createElement('li');
+//
+//    if(message.type === 'JOIN') {
+//        messageElement.classList.add('event-message');
+//        message.content = message.sender + ' joined!';
+//    } else if (message.type === 'LEAVE') {
+//        messageElement.classList.add('event-message');
+//        message.content = message.sender + ' left!';
+//    } else {
+//        messageElement.classList.add('chat-message');
+//
+//        var avatarElement = document.createElement('i');
+//        var avatarText = document.createTextNode(message.sender[0]);
+//        avatarElement.appendChild(avatarText);
+//        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+//
+//        messageElement.appendChild(avatarElement);
+//
+//        var usernameElement = document.createElement('span');
+//        var usernameText = document.createTextNode(message.sender);
+//        usernameElement.appendChild(usernameText);
+//        messageElement.appendChild(usernameElement);
+//    }
+//        var textElement = document.createElement('p');
+//        var messageText = document.createTextNode(message.content);
+//        textElement.appendChild(messageText);
+//
+//        messageElement.appendChild(textElement);
+//
+//        messageArea.appendChild(messageElement);
+//        messageArea.scrollTop = messageArea.scrollHeight;
+//    }
+//
     function getAvatarColor(messageSender) {
         var hash = 0;
         for (var i = 0; i < messageSender.length; i++) {
@@ -270,45 +356,45 @@ function onMessageReceived(payload) {
         var index = Math.abs(hash % colors.length);
         return colors[index];
     }
-    const preferredDisplaySurface = document.getElementById('displaySurface');
-    const startButton = document.getElementById('startButton');
-
-    if (adapter.browserDetails.browser === 'chrome' &&
-        adapter.browserDetails.version >= 107) {
-      // See https://developer.chrome.com/docs/web-platform/screen-sharing-controls/
-      document.getElementById('options').style.display = 'block';
-    } else if (adapter.browserDetails.browser === 'firefox') {
-      // Polyfill in Firefox.
-      // See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-      adapter.browserShim.shimGetDisplayMedia(window, 'screen');
-    }
-
-    function handleSuccess(stream) {
-      startButton.disabled = true;
-      preferredDisplaySurface.disabled = true;
-      const video = document.querySelector('video');
-      video.srcObject = stream;
-
-      // demonstrates how to detect that the user has stopped
-      // sharing the screen via the browser UI.
-      stream.getVideoTracks()[0].addEventListener('ended', () => {
-        errorMsg('The user has ended sharing the screen');
-        startButton.disabled = false;
-        preferredDisplaySurface.disabled = false;
-      });
-    }
-
-    function handleError(error) {
-      errorMsg(`getDisplayMedia error: ${error.name}`, error);
-    }
-
-    function errorMsg(msg, error) {
-      const errorElement = document.querySelector('#errorMsg');
-      errorElement.innerHTML += `<p>${msg}</p>`;
-      if (typeof error !== 'undefined') {
-        console.error(error);
-      }
-    }
+//    const preferredDisplaySurface = document.getElementById('displaySurface');
+//    const startButton = document.getElementById('startButton');
+//
+//    if (adapter.browserDetails.browser === 'chrome' &&
+//        adapter.browserDetails.version >= 107) {
+//      // See https://developer.chrome.com/docs/web-platform/screen-sharing-controls/
+//      document.getElementById('options').style.display = 'block';
+//    } else if (adapter.browserDetails.browser === 'firefox') {
+//      // Polyfill in Firefox.
+//      // See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
+//      adapter.browserShim.shimGetDisplayMedia(window, 'screen');
+//    }
+//
+//    function handleSuccess(stream) {
+//      startButton.disabled = true;
+//      preferredDisplaySurface.disabled = true;
+//      const video = document.querySelector('video');
+//      video.srcObject = stream;
+//
+//      // demonstrates how to detect that the user has stopped
+//      // sharing the screen via the browser UI.
+//      stream.getVideoTracks()[0].addEventListener('ended', () => {
+//        errorMsg('The user has ended sharing the screen');
+//        startButton.disabled = false;
+//        preferredDisplaySurface.disabled = false;
+//      });
+//    }
+//
+//    function handleError(error) {
+//      errorMsg(`getDisplayMedia error: ${error.name}`, error);
+//    }
+//
+//    function errorMsg(msg, error) {
+//      const errorElement = document.querySelector('#errorMsg');
+//      errorElement.innerHTML += `<p>${msg}</p>`;
+//      if (typeof error !== 'undefined') {
+//        console.error(error);
+//      }
+//    }
 
     //screensharing
 //    startButton.addEventListener('click', () => {

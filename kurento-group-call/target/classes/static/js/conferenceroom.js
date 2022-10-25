@@ -22,9 +22,9 @@ var ws = new WebSocket('wss://' + location.host + '/groupcall');//://' + locatio
 var participants = {};
 var name;
 
-//window.onbeforeunload = function() {//페이지벗어날때
-//	ws.close();
-//};
+window.onbeforeunload = function() {//페이지벗어날때
+	ws.close();
+};
 
 ws.onmessage = function(message) {
 console.log(message);

@@ -29,7 +29,6 @@ import javax.annotation.PreDestroy;
 
 import org.kurento.client.Continuation;
 import org.kurento.client.MediaPipeline;
-import org.kurento.tutorial.groupcall.UserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.WebSocketSession;
@@ -83,7 +82,7 @@ public class Room implements Closeable {
   private Collection<String> joinRoom(UserSession newParticipant) throws IOException {
     final JsonObject newParticipantMsg = new JsonObject();
     newParticipantMsg.addProperty("id", "newParticipantArrived");
-    newParticipantMsg.addProperty("sender", newParticipant.getName());
+    newParticipantMsg.addProperty("name", newParticipant.getName());
     newParticipantMsg.addProperty("content", "");
     final List<String> participantsList = new ArrayList<>(participants.values().size());
     log.debug("ROOM {}: notifying other participants of new participant {}", name,
@@ -140,7 +139,7 @@ public class Room implements Closeable {
     final JsonObject existingParticipantsMsg = new JsonObject();
     existingParticipantsMsg.addProperty("id", "existingParticipants");
     existingParticipantsMsg.add("data", participantsArray);
-    existingParticipantsMsg.addProperty("sender",user.getName());
+    existingParticipantsMsg.addProperty("name",user.getName());
     existingParticipantsMsg.addProperty("content","");
     log.debug("PARTICIPANT {}: sending a list of {} participants", user.getName(),
         participantsArray.size());
@@ -188,7 +187,7 @@ public void sendChat(String name,String text) throws IOException{
   final JsonObject participantLeftJson = new JsonObject();
   participantLeftJson.addProperty("id", "sendChat");
   participantLeftJson.addProperty("content", text);
-  participantLeftJson.addProperty("sender", name);
+  participantLeftJson.addProperty("name", name);
 
   for (final UserSession participant : participants.values()) {
     try {

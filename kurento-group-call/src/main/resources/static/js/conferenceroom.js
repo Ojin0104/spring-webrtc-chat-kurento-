@@ -23,6 +23,7 @@ var participants = {};
 var name;
 
 window.onbeforeunload = function() {//페이지벗어날때
+
 	ws.close();
 };
 
@@ -36,8 +37,8 @@ console.log(message);
 
 	switch (parsedMessage.id) {
 	case 'sendChat':
-	receiveChat(parsedMessage);
-	break;
+        receiveChat(parsedMessage);
+        break;
 
 	case 'existingParticipants':
 		onExistingParticipants(parsedMessage);
@@ -56,7 +57,7 @@ console.log(message);
 
 		break;
 	case 'iceCandidate':
-	console.log(5);
+
 		participants[parsedMessage.name].rtcPeer.addIceCandidate(parsedMessage.candidate, function (error) {
 	        if (error) {
 		      console.error("Error adding candidate: " + error);
@@ -190,7 +191,7 @@ function receiveVideo(sender) {
 
 	var options = {
       remoteVideo: video,
-      onicecandidate: participant.onIceCandidate.bind(participant)
+        onicecandidate: participant.onIceCandidate.bind(participant)
     }
 
 	participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
@@ -239,14 +240,14 @@ function receiveChat(message){
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);//[0]
+        var avatarText = document.createTextNode(message.name[0]);//[0]
         avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+        avatarElement.style['background-color'] = getAvatarColor(message.name);
 
         messageElement.appendChild(avatarElement);
 
         var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(message.sender);
+        var usernameText = document.createTextNode(message.name);
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
 
@@ -265,7 +266,7 @@ function joinleftmsg(message,type){
 
 	var messageElement = document.createElement('li');
 	messageElement.classList.add('event-message');
-    message.content = message.sender + ' '+type+'!';
+    message.content = message.name + ' '+type+'!';
 
     var textElement = document.createElement('p');
     var messageText = document.createTextNode(message.content);

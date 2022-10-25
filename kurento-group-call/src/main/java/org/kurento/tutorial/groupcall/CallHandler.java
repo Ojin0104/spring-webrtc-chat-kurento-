@@ -22,6 +22,7 @@ import java.io.IOException;
 import org.kurento.client.IceCandidate;
 import org.kurento.tutorial.groupcall.model.Room;
 import org.kurento.tutorial.groupcall.model.RoomManager;
+import org.kurento.tutorial.groupcall.model.UserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

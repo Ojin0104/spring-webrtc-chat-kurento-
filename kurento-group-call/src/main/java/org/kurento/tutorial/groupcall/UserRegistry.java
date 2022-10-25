@@ -19,6 +19,7 @@ package org.kurento.tutorial.groupcall;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.kurento.tutorial.groupcall.model.UserSession;
 import org.springframework.web.socket.WebSocketSession;
 
 /**

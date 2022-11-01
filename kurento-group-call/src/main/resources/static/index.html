@@ -54,6 +54,27 @@
 			</form>
 		</div>
 	</div>
+
+	<div id="screenSharing" class="hidden">
+		<h1><a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a> <span>getDisplayMedia</span></h1>
+
+		<video id="sharevideo" autoplay playsinline muted></video>
+		<button id="startButton" disabled>Start</button>
+		<fieldset id="options" style="display:none">
+			<legend>Advanced options</legend>
+			<select id="displaySurface">
+				<option value="default" selected>Show default sharing options</option>
+				<option value="browser">Prefer to share a browser tab</option>
+				<option value="window">Prefer to share a window</option>
+				<option value="monitor">Prefer to share an entire screen</option>
+			</select>
+		</fieldset>
+		<div id="errorMsg"></div>
+
+		<p>Display the screensharing stream from <code>getDisplayMedia()</code> in a video element.</p>
+
+		<a href="https://github.com/webrtc/samples/tree/gh-pages/src/content/getusermedia/getdisplaymedia" title="View source for this page on GitHub" id="viewSource">View source on GitHub</a>
+	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<script src="/webjars/webrtc-adapter/release/adapter.js"></script>

@@ -89,9 +89,11 @@ function register() {
 	name = document.getElementById('name').value;
 	var room = document.getElementById('roomName').value;
     var chatPage=document.querySelector('#chat-page');
+    var screenSharing=document.querySelector('#screenSharing');
     /////////////추가 부분
     connectingElement.classList.add('hidden');
     chatPage.classList.remove('hidden');
+    screenSharing.classList.remove('hidden');
 //    var socket = new SockJS('/ws');
 //    stompClient = Stomp.over(socket);
 //    stompClient.connect({}, onConnected, onError);
@@ -357,62 +359,63 @@ function joinleftmsg(message,type){
         var index = Math.abs(hash % colors.length);
         return colors[index];
     }
-//    const preferredDisplaySurface = document.getElementById('displaySurface');
-//    const startButton = document.getElementById('startButton');
-//
-//    if (adapter.browserDetails.browser === 'chrome' &&
-//        adapter.browserDetails.version >= 107) {
-//      // See https://developer.chrome.com/docs/web-platform/screen-sharing-controls/
-//      document.getElementById('options').style.display = 'block';
-//    } else if (adapter.browserDetails.browser === 'firefox') {
-//      // Polyfill in Firefox.
-//      // See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-//      adapter.browserShim.shimGetDisplayMedia(window, 'screen');
-//    }
-//
-//    function handleSuccess(stream) {
-//      startButton.disabled = true;
-//      preferredDisplaySurface.disabled = true;
-//      const video = document.querySelector('video');
-//      video.srcObject = stream;
-//
-//      // demonstrates how to detect that the user has stopped
-//      // sharing the screen via the browser UI.
-//      stream.getVideoTracks()[0].addEventListener('ended', () => {
-//        errorMsg('The user has ended sharing the screen');
-//        startButton.disabled = false;
-//        preferredDisplaySurface.disabled = false;
-//      });
-//    }
-//
-//    function handleError(error) {
-//      errorMsg(`getDisplayMedia error: ${error.name}`, error);
-//    }
-//
-//    function errorMsg(msg, error) {
-//      const errorElement = document.querySelector('#errorMsg');
-//      errorElement.innerHTML += `<p>${msg}</p>`;
-//      if (typeof error !== 'undefined') {
-//        console.error(error);
-//      }
-//    }
+    //screensharing 부분
+    const preferredDisplaySurface = document.getElementById('displaySurface');
+    const startButton = document.getElementById('startButton');
 
-    //screensharing
-//    startButton.addEventListener('click', () => {
-//      const options = {audio: true, video: true};
-//      const displaySurface = preferredDisplaySurface.options[preferredDisplaySurface.selectedIndex].value;
-//      if (displaySurface !== 'default') {
-//        options.video = {displaySurface};
-//      }
-//      navigator.mediaDevices.getDisplayMedia(options)
-//          .then(handleSuccess, handleError);
-//    });
-//
-//    if ((navigator.mediaDevices && 'getDisplayMedia' in navigator.mediaDevices)) {
-//      startButton.disabled = false;
-//    } else {
-//      errorMsg('getDisplayMedia is not supported');
-//    }
+    if (adapter.browserDetails.browser === 'chrome' &&
+        adapter.browserDetails.version >= 107) {
+      // See https://developer.chrome.com/docs/web-platform/screen-sharing-controls/
+      document.getElementById('options').style.display = 'block';
+    } else if (adapter.browserDetails.browser === 'firefox') {
+      // Polyfill in Firefox.
+      // See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
+      adapter.browserShim.shimGetDisplayMedia(window, 'screen');
+    }
+
+    function handleSuccess(stream) {
+      startButton.disabled = true;
+      preferredDisplaySurface.disabled = true;
+      const video = document.querySelector('#sharevideo');
+      video.srcObject = stream;
+
+      // demonstrates how to detect that the user has stopped
+      // sharing the screen via the browser UI.
+      stream.getVideoTracks()[0].addEventListener('ended', () => {
+        errorMsg('The user has ended sharing the screen');
+        startButton.disabled = false;
+        preferredDisplaySurface.disabled = false;
+      });
+    }
+
+    function handleError(error) {
+      errorMsg(`getDisplayMedia error: ${error.name}`, error);
+    }
+
+    function errorMsg(msg, error) {
+      const errorElement = document.querySelector('#errorMsg');
+      errorElement.innerHTML += `<p>${msg}</p>`;
+      if (typeof error !== 'undefined') {
+        console.error(error);
+      }
+    }
+
+
+    startButton.addEventListener('click', () => {
+      var options = {audio: true, video: true};
+      const displaySurface = preferredDisplaySurface.options[preferredDisplaySurface.selectedIndex].value;
+      if (displaySurface !== 'default') {
+        options.video = {displaySurface};
+      }
+      navigator.mediaDevices.getDisplayMedia(options)
+          .then(handleSuccess, handleError);
+    });
+
+    if ((navigator.mediaDevices && 'getDisplayMedia' in navigator.mediaDevices)) {
+      startButton.disabled = false;
+    } else {
+      errorMsg('getDisplayMedia is not supported');
+    }
 
 
 

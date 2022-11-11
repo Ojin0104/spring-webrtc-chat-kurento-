@@ -14,14 +14,27 @@
  * limitations under the License.
  *
  */
+ var sch=location.href
+ var params=new URL(sch).searchParams;
+ console.log(sch);
+
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
-
+var colors = [
+    '#2196F3', '#32c787', '#00BCD4', '#ff5652',
+    '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
+];
 
 var ws = new WebSocket('wss://' + location.host + '/groupcall');//://' + location.host + '/groupcall
 var participants = {};
 var name;
+ws.onopen=function(){
+if(params.get('userName')){
 
+     register();
+     }
+
+}
 window.onbeforeunload = function() {//페이지벗어날때
 
 	ws.close();
@@ -87,7 +100,13 @@ function register() {
 //                         }
 //                         event.preventDefault();
 	name = document.getElementById('name').value;
-	var room = document.getElementById('roomName').value;
+var room = document.getElementById('roomName').value;
+    console.log(sch);
+    if(params.get('userName')){
+    name=params.get('userName');
+    room=params.get('roomName');
+    }
+    console.log(name)
     var chatPage=document.querySelector('#chat-page');
     var screenSharing=document.querySelector('#screenSharing');
     /////////////추가 부분
@@ -138,25 +157,43 @@ function callResponse(message) {
 
 function onExistingParticipants(message) {
 	var constraints = {
-		audio : true,
-		video : {
-			mandatory : {
-				maxWidth : 320,
-				maxFrameRate : 15,
-				minFrameRate : 15
-			}
-		}
-	};
-	console.log(name + " registered in room " + room);
-	var participant = new Participant(name);
-	participants[name] = participant;
-	var video = participant.getVideoElement();
+		audio : false,
 
-	var options = {
-	      localVideo: video,
-	      mediaConstraints: constraints,
-	      onicecandidate: participant.onIceCandidate.bind(participant)
-	    }
+		video : true
+		//{
+//			mandatory : {
+//				maxWidth : 320,
+//				maxFrameRate : 15,
+//				minFrameRate : 15
+//			}
+//		}
+	};
+
+    console.log(name + " registered in room " + room);
+    	var participant = new Participant(name);
+    	participants[name] = participant;
+    	var video = participant.getVideoElement();
+
+//          navigator.mediaDevices.getDisplayMedia(constraints)
+//              .then(function(stream){
+//              var options = {
+//              	      videoStream: stream,
+//                      sendSource:'screen',
+//              	      mediaConstraints: constraints,
+//              	      onicecandidate: participant.onIceCandidate.bind(participant)
+//              	    }
+//
+//              }, handleError);
+//
+        var options={
+        localVideo:video,
+        mediaConstraints: constraints,
+        onicecandidate: participant.onIceCandidate.bind(participant)
+        }
+
+
+
+
 	participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
 		function (error) {
 		  if(error) {
@@ -165,6 +202,7 @@ function onExistingParticipants(message) {
 		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
 	});
 	//추가
+
 
 	joinleftmsg(message,"join");
 
@@ -279,77 +317,9 @@ function joinleftmsg(message,type){
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
-/////////////////추가된 부분
-//function onConnected() {
-//    // Subscribe to the Public Topic
-//    stompClient.subscribe('/topic/public', onMessageReceived);
-//
-//    // Tell your username to the server
-//    stompClient.send("/app/chat.addUser",
-//        {},
-//        JSON.stringify({sender: name, type: 'JOIN'})
-//    )
-//
-//    connectingElement.classList.add('hidden');
-//}
-//function sendChat(event) {
-//    var messageContent = messageInput.value.trim();
-//
-//    if(messageContent && stompClient) {
-//        var chatMessage = {
-//            sender: username,
-//            content: messageInput.value,
-//            type: 'CHAT'
-//        };
-//
-//        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-//        messageInput.value = '';
-//    }
-//    event.preventDefault();
-//}
-//
-//function onError(error) {
-//    connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
-//    connectingElement.style.color = 'red';
-//}
-//
-////확인
-//function onMessageReceived(payload) {
-//    var message = JSON.parse(payload.body);
-//
-//    var messageElement = document.createElement('li');
-//
-//    if(message.type === 'JOIN') {
-//        messageElement.classList.add('event-message');
-//        message.content = message.sender + ' joined!';
-//    } else if (message.type === 'LEAVE') {
-//        messageElement.classList.add('event-message');
-//        message.content = message.sender + ' left!';
-//    } else {
-//        messageElement.classList.add('chat-message');
-//
-//        var avatarElement = document.createElement('i');
-//        var avatarText = document.createTextNode(message.sender[0]);
-//        avatarElement.appendChild(avatarText);
-//        avatarElement.style['background-color'] = getAvatarColor(message.sender);
-//
-//        messageElement.appendChild(avatarElement);
-//
-//        var usernameElement = document.createElement('span');
-//        var usernameText = document.createTextNode(message.sender);
-//        usernameElement.appendChild(usernameText);
-//        messageElement.appendChild(usernameElement);
-//    }
-//        var textElement = document.createElement('p');
-//        var messageText = document.createTextNode(message.content);
-//        textElement.appendChild(messageText);
-//
-//        messageElement.appendChild(textElement);
-//
-//        messageArea.appendChild(messageElement);
-//        messageArea.scrollTop = messageArea.scrollHeight;
-//    }
-//
+
+
+
     function getAvatarColor(messageSender) {
         var hash = 0;
         for (var i = 0; i < messageSender.length; i++) {
@@ -359,9 +329,13 @@ function joinleftmsg(message,type){
         var index = Math.abs(hash % colors.length);
         return colors[index];
     }
+
+
     //screensharing 부분
     const preferredDisplaySurface = document.getElementById('displaySurface');
     const startButton = document.getElementById('startButton');
+
+
 
     if (adapter.browserDetails.browser === 'chrome' &&
         adapter.browserDetails.version >= 107) {
@@ -374,19 +348,72 @@ function joinleftmsg(message,type){
     }
 
     function handleSuccess(stream) {
+    var room = document.getElementById('roomName').value;
       startButton.disabled = true;
       preferredDisplaySurface.disabled = true;
       const video = document.querySelector('#sharevideo');
-      video.srcObject = stream;
+      video.srcObject=stream;
 
-      // demonstrates how to detect that the user has stopped
-      // sharing the screen via the browser UI.
+
+      var videoss = document.createElement('video');
+      videoss.autoplay = true;
+      videoss.controls = false;
+
+
+       var save = new Participant('sharing');
+       participants['sharing'] = save;
+       //save로 endpoint생성해보자
+
+
+
+
+        var constraints = {
+                        audio : true,
+                        video : {
+                            mandatory : {
+                                maxWidth : 320,
+                                maxFrameRate : 15,
+
+                            }
+                        }
+                    };
+//
+                  navigator.mediaDevices.getDisplayMedia(constraints)
+                      .then(function(stream){
+                      var options = {
+                      	      videoStream: stream,
+                              sendSource:'screen',
+                      	      mediaConstraints: constraints,
+                      	      onicecandidate: save.onIceCandidate.bind(save)
+                      	    }
+                        save.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+                                		function (error) {
+                                		  if(error) {
+                                			  return console.error(error);
+                                		  }
+                                		  this.generateOffer (save.offerToReceiveVideo.bind(save));
+                                	});
+                                	//추가
+                      }, handleError);
+
+
+
+
+
+
+
+        	04526+3.1
+
+
       stream.getVideoTracks()[0].addEventListener('ended', () => {
         errorMsg('The user has ended sharing the screen');
         startButton.disabled = false;
         preferredDisplaySurface.disabled = false;
       });
-    }
+
+
+
+   }
 
     function handleError(error) {
       errorMsg(`getDisplayMedia error: ${error.name}`, error);
@@ -416,7 +443,6 @@ function joinleftmsg(message,type){
     } else {
       errorMsg('getDisplayMedia is not supported');
     }
-
 
 
 

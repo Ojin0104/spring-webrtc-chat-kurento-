@@ -5,10 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d17d190-447d-457a-8dd1-57600eb5ec31" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/controller/HomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/kurento-utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/CallHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/CallHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/chat.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/participant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/participant.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/CallHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/CallHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/chat.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/conferenceroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/conferenceroom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/participant.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/participant.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../spring-boot-websocket-chat-demo" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-websocket-chat-demo" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,6 +35,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/kurento/kurento-utils-js/6.18.0/kurento-utils-js-6.18.0.jar!/META-INF/resources/js/kurento-utils.js" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -37,7 +49,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "last_opened_file_path": "C:/Users/s_hanyj0104/FACE_CHAT/kurento-group-call"
+    "last_opened_file_path": "C:/Users/s_hanyj0104/Downloads/의약품조회 웹서비스",
+    "run.code.analysis.last.selected.profile": "pProject Default"
   }
 }]]></component>
   <component name="RecentsManager">

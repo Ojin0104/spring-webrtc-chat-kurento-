@@ -38,6 +38,7 @@ function Participant(name) {
 	container.appendChild(video);
 	container.appendChild(span);
 	container.onclick = switchContainerClass;
+
 	document.getElementById('participants').appendChild(container);
 
 	span.appendChild(document.createTextNode(name));
@@ -55,7 +56,7 @@ function Participant(name) {
 		return video;
 	}
 
-	function switchContainerClass() {//클릭시 메인캠으로 변경가능
+	function switchContainerClass() {
 		if (container.className === PARTICIPANT_CLASS) {
 			var elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
 			elements.forEach(function(item) {

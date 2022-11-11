@@ -65,6 +65,7 @@ public class CallHandler extends TextWebSocketHandler {
     }
     System.out.println(jsonMessage);
     switch (jsonMessage.get("id").getAsString()) {
+
       case "sendChat":
 
         sendChat(jsonMessage);
@@ -77,6 +78,7 @@ public class CallHandler extends TextWebSocketHandler {
         final String senderName = jsonMessage.get("sender").getAsString();
         final UserSession sender = registry.getByName(senderName);
         final String sdpOffer = jsonMessage.get("sdpOffer").getAsString();
+
         user.receiveVideoFrom(sender, sdpOffer);
         break;
       case "leaveRoom":
@@ -131,4 +133,6 @@ public class CallHandler extends TextWebSocketHandler {
     room.sendChat(name,msg);
 
   }
+
+
 }

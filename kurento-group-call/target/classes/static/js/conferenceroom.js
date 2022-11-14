@@ -28,10 +28,13 @@ var colors = [
 var ws = new WebSocket('wss://' + location.host + '/groupcall');//://' + location.host + '/groupcall
 var participants = {};
 var name;
+var room;
 ws.onopen=function(){
 if(params.get('userName')){
+document.getElementById('roomName').value=params.get('roomName');
+document.getElementById('name').value=params.get('userName');
 
-     register();
+    register();
      }
 
 }
@@ -100,19 +103,16 @@ function register() {
 //                         }
 //                         event.preventDefault();
 	name = document.getElementById('name').value;
-var room = document.getElementById('roomName').value;
+    room = document.getElementById('roomName').value;
     console.log(sch);
-    if(params.get('userName')){
-    name=params.get('userName');
-    room=params.get('roomName');
-    }
+
     console.log(name)
     var chatPage=document.querySelector('#chat-page');
     var screenSharing=document.querySelector('#screenSharing');
     /////////////추가 부분
     connectingElement.classList.add('hidden');
     chatPage.classList.remove('hidden');
-    screenSharing.classList.remove('hidden');
+    //screenSharing.classList.remove('hidden');
 //    var socket = new SockJS('/ws');
 //    stompClient = Stomp.over(socket);
 //    stompClient.connect({}, onConnected, onError);
@@ -306,7 +306,12 @@ function joinleftmsg(message,type){
 
 	var messageElement = document.createElement('li');
 	messageElement.classList.add('event-message');
-    message.content = message.name + ' '+type+'!';
+	if(type==="join"){
+
+    message.content = message.name + '님이 입장하였습니다.';
+    }else if(type==="left"){
+    message.content = message.name + '님이 퇴장하였습니다.';
+    }
 
     var textElement = document.createElement('p');
     var messageText = document.createTextNode(message.content);

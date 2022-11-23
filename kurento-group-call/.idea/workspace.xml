@@ -7,8 +7,7 @@
     <list default="true" id="2d17d190-447d-457a-8dd1-57600eb5ec31" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/static/js/conferenceroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/conferenceroom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/kurento-utils.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../spring-boot-websocket-chat-demo" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-websocket-chat-demo" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,12 +37,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/s_hanyj0104/Downloads/의약품조회 웹서비스&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "last_opened_file_path": "C:/Users/s_hanyj0104/Face-WebRtc/kurento-group-call",
+    "run.code.analysis.last.selected.profile": "pProject Default"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\s_hanyj0104\kurentodic\kurento-tutorial-java\kurento-group-call" />

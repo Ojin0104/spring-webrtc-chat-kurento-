@@ -112,7 +112,7 @@ function register() {
     /////////////추가 부분
     connectingElement.classList.add('hidden');
     chatPage.classList.remove('hidden');
-    //screenSharing.classList.remove('hidden');
+    screenSharing.classList.remove('hidden');
 //    var socket = new SockJS('/ws');
 //    stompClient = Stomp.over(socket);
 //    stompClient.connect({}, onConnected, onError);
@@ -157,7 +157,7 @@ function callResponse(message) {
 
 function onExistingParticipants(message) {
 	var constraints = {
-		audio : false,
+		audio : true,
 
 		video : true
 		//{
@@ -168,39 +168,48 @@ function onExistingParticipants(message) {
 //			}
 //		}
 	};
-
+var options={}
     console.log(name + " registered in room " + room);
     	var participant = new Participant(name);
     	participants[name] = participant;
     	var video = participant.getVideoElement();
+    if(name==="sharing"){
+          navigator.mediaDevices.getDisplayMedia(constraints)
+              .then(function(stream){
+              options = {
+              	      videoStream: stream,
+                      sendSource:'webcam',
+              	      mediaConstraints: constraints,
+              	      onicecandidate: participant.onIceCandidate.bind(participant)
+              	    }
+              participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+              		function (error) {
+              		  if(error) {
+              			  return console.error(error);
+              		  }
+              		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+              	});
 
-//          navigator.mediaDevices.getDisplayMedia(constraints)
-//              .then(function(stream){
-//              var options = {
-//              	      videoStream: stream,
-//                      sendSource:'screen',
-//              	      mediaConstraints: constraints,
-//              	      onicecandidate: participant.onIceCandidate.bind(participant)
-//              	    }
-//
-//              }, handleError);
-//
-        var options={
+              });
+}else{
+        options={
         localVideo:video,
         mediaConstraints: constraints,
         onicecandidate: participant.onIceCandidate.bind(participant)
         }
+        participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+        		function (error) {
+        		  if(error) {
+        			  return console.error(error);
+        		  }
+        		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+        	});
+}
 
 
 
 
-	participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
-		function (error) {
-		  if(error) {
-			  return console.error(error);
-		  }
-		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
-	});
+
 	//추가
 
 
@@ -383,23 +392,23 @@ function joinleftmsg(message,type){
                         }
                     };
 //
-                  navigator.mediaDevices.getDisplayMedia(constraints)
-                      .then(function(stream){
+//                  navigator.mediaDevices.getDisplayMedia(constraints)
+//                      .then(function(stream){
                       var options = {
                       	      videoStream: stream,
                               sendSource:'screen',
                       	      mediaConstraints: constraints,
                       	      onicecandidate: save.onIceCandidate.bind(save)
                       	    }
-                        save.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+                        participants[name].rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
                                 		function (error) {
                                 		  if(error) {
                                 			  return console.error(error);
                                 		  }
-                                		  this.generateOffer (save.offerToReceiveVideo.bind(save));
+                                		  this.generateOffer (participants[name].offerToReceiveVideo.bind(participants[name]));
                                 	});
                                 	//추가
-                      }, handleError);
+//                      }, handleError);
 
 
 
@@ -407,7 +416,7 @@ function joinleftmsg(message,type){
 
 
 
-        	04526+3.1
+
 
 
       stream.getVideoTracks()[0].addEventListener('ended', () => {

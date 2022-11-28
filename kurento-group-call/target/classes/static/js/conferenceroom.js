@@ -52,6 +52,13 @@ console.log(message);
 
 
 	switch (parsedMessage.id) {
+	case 'sharingStart':
+	    onNewSharing(parsedMessage);
+	    break
+
+    case 'sharingParticipants':
+        onSharingParticipants(parsedMessage);
+        break;
 	case 'sendChat':
         receiveChat(parsedMessage);
         break;
@@ -60,6 +67,10 @@ console.log(message);
 		onExistingParticipants(parsedMessage);
 
 		break;
+
+	case 'sharingexistingParticipants':
+	    onSharingExistingParticipants(parsedMessage);
+	    break;
 	case 'newParticipantArrived':
 		onNewParticipant(parsedMessage);
 
@@ -129,6 +140,7 @@ function register() {
 	}
 	console.log(message)
 	sendMessage(message);
+
 }
 
 function onNewParticipant(request) {
@@ -136,6 +148,9 @@ function onNewParticipant(request) {
 
 
 	receiveVideo(request.name);
+}
+function onNewSharing(request){
+    receiveVideo(request.name);
 }
 
 function receiveVideoResponse(result) {
@@ -154,49 +169,114 @@ function callResponse(message) {
 		});
 	}
 }
-
-function onExistingParticipants(message) {
+////////
+function onSharingExistingParticipants(message) {
 	var constraints = {
 		audio : true,
 
 		video : true
-		//{
-//			mandatory : {
-//				maxWidth : 320,
-//				maxFrameRate : 15,
-//				minFrameRate : 15
-//			}
-//		}
 	};
 var options={}
-    console.log(name + " registered in room " + room);
-    	var participant = new Participant(name);
-    	participants[name] = participant;
-    	var video = participant.getVideoElement();
-    if(name==="sharing"){
+    console.log(name + " sharing in room " + room);
+    	var participantss = new Participant(name+"_sharing");
+    	participants[name+"_sharing"] = participantss;
+    	var video = participantss.getVideoElement();
+//    if(name==="sharing"){
           navigator.mediaDevices.getDisplayMedia(constraints)
               .then(function(stream){
               options = {
               	      videoStream: stream,
                       sendSource:'webcam',
               	      mediaConstraints: constraints,
-              	      onicecandidate: participant.onIceCandidate.bind(participant)
+              	      onicecandidate: participantss.onIceCandidate.bind(participantss)
               	    }
-              participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+              participantss.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
               		function (error) {
               		  if(error) {
               			  return console.error(error);
               		  }
-              		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+              		  this.generateOffer (participantss.offerToReceiveVideo.bind(participantss));
               	});
 
               });
-}else{
+//}else{
+//        options={
+//        localVideo:video,
+//        mediaConstraints: constraints,
+//        onicecandidate: participant.onIceCandidate.bind(participant)
+//        }
+////        options={
+////        videoStream: stream,
+////        sendSource:'webcam',
+////        mediaConstraints: constraints,
+////        onicecandidate: participant.onIceCandidate.bind(participant)
+////        }
+//        participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+//        		function (error) {
+//        		  if(error) {
+//        			  return console.error(error);
+//        		  }
+//        		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+//        	});
+
+
+
+
+
+
+	//추가
+
+
+
+
+
+//    let arr=message.data.filter((element)=>element!==name);
+//    console.log(arr);
+//	arr.forEach(receiveVideo);
+}
+///////
+function onExistingParticipants(message) {
+	var constraints = {
+		audio : true,
+
+		video : true
+
+	};
+var options={}
+    console.log(name + " registered in room " + room);
+    	var participant = new Participant(name);
+    	participants[name] = participant;
+    	var video = participant.getVideoElement();
+//    if(name==="sharing"){
+//          navigator.mediaDevices.getDisplayMedia(constraints)
+//              .then(function(stream){
+//              options = {
+//              	      videoStream: stream,
+//                      sendSource:'webcam',
+//              	      mediaConstraints: constraints,
+//              	      onicecandidate: participant.onIceCandidate.bind(participant)
+//              	    }
+//              participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+//              		function (error) {
+//              		  if(error) {
+//              			  return console.error(error);
+//              		  }
+//              		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+//              	});
+//
+//              });
+//}else{
         options={
         localVideo:video,
         mediaConstraints: constraints,
         onicecandidate: participant.onIceCandidate.bind(participant)
         }
+//        options={
+//        videoStream: stream,
+//        sendSource:'webcam',
+//        mediaConstraints: constraints,
+//        onicecandidate: participant.onIceCandidate.bind(participant)
+//        }
         participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
         		function (error) {
         		  if(error) {
@@ -204,7 +284,7 @@ var options={}
         		  }
         		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
         	});
-}
+
 
 
 
@@ -214,9 +294,13 @@ var options={}
 
 
 	joinleftmsg(message,"join");
-
+    console.log(message.data);
 	message.data.forEach(receiveVideo);
 }
+
+/////////////////////////
+
+/////////////////////
 
 function leaveRoom() {
 	sendMessage({
@@ -251,6 +335,7 @@ function receiveVideo(sender) {
 			  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
 	});;
 }
+
 
 function onParticipantLeft(request) {
 	console.log('Participant ' + request.name + ' left');
@@ -360,74 +445,74 @@ function joinleftmsg(message,type){
       // See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
       adapter.browserShim.shimGetDisplayMedia(window, 'screen');
     }
-
-    function handleSuccess(stream) {
-    var room = document.getElementById('roomName').value;
-      startButton.disabled = true;
-      preferredDisplaySurface.disabled = true;
-      const video = document.querySelector('#sharevideo');
-      video.srcObject=stream;
-
-
-      var videoss = document.createElement('video');
-      videoss.autoplay = true;
-      videoss.controls = false;
-
-
-       var save = new Participant('sharing');
-       participants['sharing'] = save;
-       //save로 endpoint생성해보자
-
-
-
-
-        var constraints = {
-                        audio : true,
-                        video : {
-                            mandatory : {
-                                maxWidth : 320,
-                                maxFrameRate : 15,
-
-                            }
-                        }
-                    };
 //
-//                  navigator.mediaDevices.getDisplayMedia(constraints)
-//                      .then(function(stream){
-                      var options = {
-                      	      videoStream: stream,
-                              sendSource:'screen',
-                      	      mediaConstraints: constraints,
-                      	      onicecandidate: save.onIceCandidate.bind(save)
-                      	    }
-                        participants[name].rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
-                                		function (error) {
-                                		  if(error) {
-                                			  return console.error(error);
-                                		  }
-                                		  this.generateOffer (participants[name].offerToReceiveVideo.bind(participants[name]));
-                                	});
-                                	//추가
-//                      }, handleError);
-
-
-
-
-
-
-
-
-
-
-      stream.getVideoTracks()[0].addEventListener('ended', () => {
-        errorMsg('The user has ended sharing the screen');
-        startButton.disabled = false;
-        preferredDisplaySurface.disabled = false;
-      });
-
-
-
-   }
+//    function handleSuccess(stream) {
+//    var room = document.getElementById('roomName').value;
+//      startButton.disabled = true;
+//      preferredDisplaySurface.disabled = true;
+//      const video = document.querySelector('#sharevideo');
+//      video.srcObject=stream;
+//
+//
+//      var videoss = document.createElement('video');
+//      videoss.autoplay = true;
+//      videoss.controls = false;
+//
+//
+//       var save = new Participant('sharing');
+//       participants['sharing'] = save;
+//       //save로 endpoint생성해보자
+//
+//
+//
+//
+//        var constraints = {
+//                        audio : true,
+//                        video : {
+//                            mandatory : {
+//                                maxWidth : 320,
+//                                maxFrameRate : 15,
+//
+//                            }
+//                        }
+//                    };
+////
+////                  navigator.mediaDevices.getDisplayMedia(constraints)
+////                      .then(function(stream){
+//                      var options = {
+//                      	      videoStream: stream,
+//                              sendSource:'screen',
+//                      	      mediaConstraints: constraints,
+//                      	      onicecandidate: save.onIceCandidate.bind(save)
+//                      	    }
+//                        participants[name].rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+//                                		function (error) {
+//                                		  if(error) {
+//                                			  return console.error(error);
+//                                		  }
+//                                		  this.generateOffer (participants[name].offerToReceiveVideo.bind(participants[name]));
+//                                	});
+//                                	//추가
+////                      }, handleError);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//      stream.getVideoTracks()[0].addEventListener('ended', () => {
+//        errorMsg('The user has ended sharing the screen');
+//        startButton.disabled = false;
+//        preferredDisplaySurface.disabled = false;
+//      });
+//
+//
+//
+//   }
 
     function handleError(error) {
       errorMsg(`getDisplayMedia error: ${error.name}`, error);
@@ -443,13 +528,15 @@ function joinleftmsg(message,type){
 
 
     startButton.addEventListener('click', () => {
-      var options = {audio: true, video: true};
-      const displaySurface = preferredDisplaySurface.options[preferredDisplaySurface.selectedIndex].value;
-      if (displaySurface !== 'default') {
-        options.video = {displaySurface};
-      }
-      navigator.mediaDevices.getDisplayMedia(options)
-          .then(handleSuccess, handleError);
+//
+    var message = {
+            id : 'startSharing',
+            name : name+'_sharing',
+            room : room,
+        }
+        console.log(message)
+       sendMessage(message);
+
     });
 
     if ((navigator.mediaDevices && 'getDisplayMedia' in navigator.mediaDevices)) {

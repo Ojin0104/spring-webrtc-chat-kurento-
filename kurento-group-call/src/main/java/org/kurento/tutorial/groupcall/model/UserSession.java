@@ -47,11 +47,12 @@ public class UserSession implements Closeable {
 
   private final String name;
   private final WebSocketSession session;
-
+  //private final String sharingname;
   private final MediaPipeline pipeline;
 
   private final String roomName;
   private final WebRtcEndpoint outgoingMedia;
+
   private final ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
 
   public UserSession(final String name, String roomName, final WebSocketSession session,
@@ -62,6 +63,7 @@ public class UserSession implements Closeable {
     this.session = session;
     this.roomName = roomName;
     this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
+    log.info("my Name is "+ this.name);
 
     this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
 
@@ -80,6 +82,8 @@ public class UserSession implements Closeable {
         }
       }
     });
+
+
   }
 
   public WebRtcEndpoint getOutgoingWebRtcPeer() {
@@ -108,7 +112,8 @@ public class UserSession implements Closeable {
 
     log.trace("USER {}: SdpOffer for {} is {}", this.name, sender.getName(), sdpOffer);
 
-    final String ipSdpAnswer = this.getEndpointForUser(sender).processOffer(sdpOffer);
+    WebRtcEndpoint point=this.getEndpointForUser(sender);
+    final String ipSdpAnswer = point.processOffer(sdpOffer);
     final JsonObject scParams = new JsonObject();
     scParams.addProperty("id", "receiveVideoAnswer");
     scParams.addProperty("name", sender.getName());
@@ -122,15 +127,18 @@ public class UserSession implements Closeable {
 
   private WebRtcEndpoint getEndpointForUser(final UserSession sender) {
     if (sender.getName().equals(name)) {
-      log.debug("PARTICIPANT {}: configuring loopback", this.name);
+
+      log.info("PARTICIPANT {}: configuring loopback", this.name);
+      log.info(String.valueOf(outgoingMedia));
+
       return outgoingMedia;
     }
 
-    log.debug("PARTICIPANT {}: receiving video from {}", this.name, sender.getName());
+    log.info("PARTICIPANT {}: receiving video from {}", this.name, sender.getName());
 
     WebRtcEndpoint incoming = incomingMedia.get(sender.getName());
     if (incoming == null) {
-      log.debug("PARTICIPANT {}: creating new endpoint for {}", this.name, sender.getName());
+      log.info("PARTICIPANT {}: creating new endpoint for {}", this.name, sender.getName());
       incoming = new WebRtcEndpoint.Builder(pipeline).build();
 
       incoming.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {

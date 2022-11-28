@@ -59,13 +59,15 @@ public class CallHandler extends TextWebSocketHandler {
     final UserSession user = registry.getBySession(session);
 
     if (user != null) {
-      log.debug("Incoming message from user '{}': {}", user.getName(), jsonMessage);
+      log.info("Incoming message from user '{}': {}", user.getName(), jsonMessage);
     } else {
-      log.debug("Incoming message from new user: {}", jsonMessage);
+      log.info("Incoming message from new user: {}", jsonMessage);
     }
     System.out.println(jsonMessage);
     switch (jsonMessage.get("id").getAsString()) {
-
+      case "startSharing":
+        startSharing(jsonMessage,session);
+        break;
       case "sendChat":
 
         sendChat(jsonMessage);
@@ -113,7 +115,17 @@ public class CallHandler extends TextWebSocketHandler {
     final UserSession user = room.join(name, session);
     registry.register(user);
   }
+  ////////////
+  private void startSharing(JsonObject params,WebSocketSession session) throws IOException{
+    final String roomName = params.get("room").getAsString();
+    final String name = params.get("name").getAsString();
+    log.info("PARTICIPANT {}: sharing screen to room {}", name, roomName);
 
+    Room room = roomManager.getRoom(roomName);
+    final UserSession user = room.sharing(name, session);
+    registry.register(user);
+  }
+  ////////////////
   private void leaveRoom(UserSession user) throws IOException {
     final Room room = roomManager.getRoom(user.getRoomName());
     room.leave(user);

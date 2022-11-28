@@ -67,11 +67,24 @@ public class Room implements Closeable {
   public UserSession join(String userName, WebSocketSession session) throws IOException {
     log.info("ROOM {}: adding participant {}", this.name, userName);
     final UserSession participant = new UserSession(userName, this.name, session, this.pipeline);
+
     joinRoom(participant);
     participants.put(participant.getName(), participant);
     sendParticipantNames(participant);
     return participant;
   }
+////////////////
+  public UserSession sharing(String userName, WebSocketSession session) throws IOException {
+    log.info("ROOM {}: adding participant {}", this.name, userName);
+    final UserSession sharingvideo = new UserSession(userName, this.name, session, this.pipeline);
+    sharingStart(sharingvideo);//공유시작했음을 알림
+    participants.put(sharingvideo.getName(), sharingvideo);
+    sharingParticipantNames(sharingvideo);//이건 필요없을듯?
+
+    ///
+    return sharingvideo;
+  }
+
 
   public void leave(UserSession user) throws IOException {
     log.debug("PARTICIPANT {}: Leaving room {}", user.getName(), this.name);
@@ -91,6 +104,27 @@ public class Room implements Closeable {
     for (final UserSession participant : participants.values()) {
       try {
         participant.sendMessage(newParticipantMsg);
+      } catch (final IOException e) {
+        log.debug("ROOM {}: participant {} could not be notified", name, participant.getName(), e);
+      }
+      participantsList.add(participant.getName());
+    }
+
+    return participantsList;
+  }
+  private Collection<String> sharingStart(UserSession newParticipant) throws IOException {
+    final JsonObject newParticipantMsg = new JsonObject();
+    newParticipantMsg.addProperty("id", "sharingStart");
+    newParticipantMsg.addProperty("name", newParticipant.getName());
+    newParticipantMsg.addProperty("content", "");
+    final List<String> participantsList = new ArrayList<>(participants.values().size());
+    log.debug("ROOM {}: notifying other participants of new participant {}", name,
+            newParticipant.getName());
+
+    for (final UserSession participant : participants.values()) {
+      try {
+        if(!participant.getName().equals(newParticipant.getName().substring(0,newParticipant.getName().length()-8)))
+                participant.sendMessage(newParticipantMsg);
       } catch (final IOException e) {
         log.debug("ROOM {}: participant {} could not be notified", name, participant.getName(), e);
       }
@@ -124,6 +158,27 @@ public class Room implements Closeable {
           unnotifiedParticipants, name);
     }
 
+  }
+
+
+  public void sharingParticipantNames(UserSession user) throws IOException {
+
+    final JsonArray participantsArray = new JsonArray();
+    for (final UserSession participant : this.getParticipants()) {
+      if (!participant.equals(user)) {
+        final JsonElement participantName = new JsonPrimitive(participant.getName());
+        participantsArray.add(participantName);
+      }
+    }
+
+    final JsonObject existingParticipantsMsg = new JsonObject();
+    existingParticipantsMsg.addProperty("id", "sharingexistingParticipants");
+    existingParticipantsMsg.add("data", participantsArray);
+    existingParticipantsMsg.addProperty("name",user.getName());
+    existingParticipantsMsg.addProperty("content","");
+    log.debug("PARTICIPANT {}: sending a list of {} participants", user.getName(),
+            participantsArray.size());
+    user.sendMessage(existingParticipantsMsg);
   }
 
   public void sendParticipantNames(UserSession user) throws IOException {
@@ -184,15 +239,15 @@ public class Room implements Closeable {
   }
 public void sendChat(String name,String text) throws IOException{
   final List<String> unnotifiedParticipants = new ArrayList<>();
-  final JsonObject participantLeftJson = new JsonObject();
-  participantLeftJson.addProperty("id", "sendChat");
-  participantLeftJson.addProperty("content", text);
-  participantLeftJson.addProperty("name", name);
+  final JsonObject chatJson = new JsonObject();
+  chatJson.addProperty("id", "sendChat");
+  chatJson.addProperty("content", text);
+  chatJson.addProperty("name", name);
 
   for (final UserSession participant : participants.values()) {
     try {
 
-      participant.sendMessage(participantLeftJson);
+      participant.sendMessage(chatJson);
     } catch (final IOException e) {
       unnotifiedParticipants.add(participant.getName());
     }

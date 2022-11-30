@@ -27,6 +27,9 @@
 			<div id="room" style="display: none;">
 				<h2 id="room-header"></h2>
 				<div id="participants"></div>
+				<div id="sharingVideo">
+					<video id="screenVideo" autoplay playsinline muted></video>
+				</div>
 				<input type="button" id="button-leave" onmouseup="leaveRoom();"
 					value="Leave room">
 			</div>
@@ -58,7 +61,7 @@
 	<div id="screenSharing" class="hidden">
 		<h1><a title="WebRTC samples homepage">Screen Sharing</a> </h1>
 
-		<video id="sharevideo" autoplay playsinline muted></video>
+		<video id="shareVideo" autoplay playsinline muted></video>
 		<button id="startButton" disabled>Start</button>
 		<fieldset id="options" style="display:none">
 			<legend>Advanced options</legend>

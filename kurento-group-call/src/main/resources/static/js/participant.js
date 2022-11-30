@@ -30,17 +30,23 @@ function Participant(name) {
 	this.name = name;
 	var container = document.createElement('div');
 	container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
+
 	container.id = name;
 	var span = document.createElement('span');
 	var video = document.createElement('video');
 	var rtcPeer;
 
+
 	container.appendChild(video);
 	container.appendChild(span);
 	container.onclick = switchContainerClass;
 
-	document.getElementById('participants').appendChild(container);
-
+    if(name.slice(-8)==="_sharing"){
+        console.log("sharing");
+        document.getElementById('sharingVideo').appendChild(container);}
+    else{
+    console.log("participant");
+	    document.getElementById('participants').appendChild(container);}
 	span.appendChild(document.createTextNode(name));
 
 	video.id = 'video-' + name;

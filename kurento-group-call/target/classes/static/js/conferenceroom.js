@@ -184,14 +184,20 @@ function onSharingExistingParticipants(message) {
 
 		video : true
 	};
+
 var options={}
     console.log(name + " sharing in room " + room);
     	var participantss = new Participant(name+"_sharing");
     	participants[name+"_sharing"] = participantss;
     	var video = participantss.getVideoElement();
 //    if(name==="sharing"){
+        const screen = document.querySelector('#screenVideo');
+
+        //
+
           navigator.mediaDevices.getDisplayMedia(constraints)
               .then(function(stream){
+                screen.srcObject=stream;
               options = {
               	      videoStream: stream,
                       sendSource:'webcam',
@@ -207,40 +213,10 @@ var options={}
               	});
 
               });
-//}else{
-//        options={
-//        localVideo:video,
-//        mediaConstraints: constraints,
-//        onicecandidate: participant.onIceCandidate.bind(participant)
-//        }
-////        options={
-////        videoStream: stream,
-////        sendSource:'webcam',
-////        mediaConstraints: constraints,
-////        onicecandidate: participant.onIceCandidate.bind(participant)
-////        }
-//        participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
-//        		function (error) {
-//        		  if(error) {
-//        			  return console.error(error);
-//        		  }
-//        		  this.generateOffer (participant.offerToReceiveVideo.bind(participant));
-//        	});
+        var videoid=name+"_sharing";
 
-
-
-
-
-
-	//추가
-
-
-
-
-
-//    let arr=message.data.filter((element)=>element!==name);
-//    console.log(arr);
-//	arr.forEach(receiveVideo);
+        var delscreenvideo=document.getElementById(videoid);
+        delscreenvideo.classList.add('hidden');
 }
 ///////
 function onExistingParticipants(message) {

@@ -38,10 +38,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-/**
- * @author Ivan Gracia (izanmail@gmail.com)
- * @since 4.3.1
- */
+
 public class Room implements Closeable {
   private final Logger log = LoggerFactory.getLogger(Room.class);
 
@@ -66,7 +63,7 @@ public class Room implements Closeable {
 
   public UserSession join(String userName, WebSocketSession session) throws IOException {
     log.info("ROOM {}: adding participant {}", this.name, userName);
-    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline);
+    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline,false);
 
     joinRoom(participant);
     participants.put(participant.getName(), participant);
@@ -76,10 +73,10 @@ public class Room implements Closeable {
 ////////////////
   public UserSession sharing(String userName, WebSocketSession session) throws IOException {
     log.info("ROOM {}: adding participant {}", this.name, userName);
-    final UserSession sharingvideo = new UserSession(userName, this.name, session, this.pipeline);
+    final UserSession sharingvideo = new UserSession(userName, this.name, session, this.pipeline,true);
     sharingStart(sharingvideo);//공유시작했음을 알림
     participants.put(sharingvideo.getName(), sharingvideo);
-    sharingParticipantNames(sharingvideo);//이건 필요없을듯?
+    sharingParticipantNames(sharingvideo);
 
     ///
     return sharingvideo;
@@ -103,7 +100,8 @@ public class Room implements Closeable {
 
     for (final UserSession participant : participants.values()) {
       try {
-        participant.sendMessage(newParticipantMsg);
+        if(!participant.getIsSharing())
+            participant.sendMessage(newParticipantMsg);
       } catch (final IOException e) {
         log.debug("ROOM {}: participant {} could not be notified", name, participant.getName(), e);
       }

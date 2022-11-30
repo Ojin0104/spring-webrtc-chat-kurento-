@@ -52,11 +52,11 @@ public class UserSession implements Closeable {
 
   private final String roomName;
   private final WebRtcEndpoint outgoingMedia;
-
+  private final boolean isSharing;
   private final ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
 
   public UserSession(final String name, String roomName, final WebSocketSession session,
-      MediaPipeline pipeline) {
+      MediaPipeline pipeline,final boolean isSharing) {
 
     this.pipeline = pipeline;
     this.name = name;
@@ -64,7 +64,7 @@ public class UserSession implements Closeable {
     this.roomName = roomName;
     this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
     log.info("my Name is "+ this.name);
-
+    this.isSharing=isSharing;
     this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
 
       @Override
@@ -107,6 +107,7 @@ public class UserSession implements Closeable {
     return this.roomName;
   }
 
+  public boolean getIsSharing(){return this.isSharing;}
   public void receiveVideoFrom(UserSession sender, String sdpOffer) throws IOException {
     log.info("USER {}: connecting with {} in room {}", this.name, sender.getName(), this.roomName);
 

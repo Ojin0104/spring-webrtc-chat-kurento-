@@ -24,6 +24,7 @@ var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
+var isSharing=false;
 
 var ws = new WebSocket('wss://' + location.host + '/groupcall');//://' + location.host + '/groupcall
 var participants = {};
@@ -56,9 +57,9 @@ console.log(message);
 	    onNewSharing(parsedMessage);
 	    break
 
-    case 'sharingParticipants':
-        onSharingParticipants(parsedMessage);
-        break;
+//    case 'sharingParticipants':
+//        onSharingParticipants(parsedMessage);
+//        break;
 	case 'sendChat':
         receiveChat(parsedMessage);
         break;
@@ -150,6 +151,10 @@ function onNewParticipant(request) {
 	receiveVideo(request.name);
 }
 function onNewSharing(request){
+    console.log(isSharing);
+    isSharing=true;
+    console.log(isSharing);
+    screenSharing.classList.add('hidden');
     receiveVideo(request.name);
 }
 
@@ -171,6 +176,9 @@ function callResponse(message) {
 }
 ////////
 function onSharingExistingParticipants(message) {
+
+    isSharing=true;
+    screenSharing.classList.add('hidden');
 	var constraints = {
 		audio : true,
 

@@ -26,28 +26,52 @@ const PARTICIPANT_CLASS = 'participant';
  *                        The tag of the new element will be 'video<name>'
  * @return
  */
-function Participant(name) {
+function Participant(name,isSharing) {
 	this.name = name;
 	var container = document.createElement('div');
-	container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
+	container.className = PARTICIPANT_MAIN_CLASS;
 
 	container.id = name;
 	var span = document.createElement('span');
 	var video = document.createElement('video');
 	var rtcPeer;
-
+    this.isSharing=isSharing;
 
 	container.appendChild(video);
 	container.appendChild(span);
-	container.onclick = switchContainerClass;
+//	container.onclick = switchContainerClass;
 
-    if(name.slice(-8)==="_sharing"){
-        console.log("sharing");
-        document.getElementById('sharingVideo').appendChild(container);}
-    else{
-    console.log("participant");
-	    document.getElementById('participants').appendChild(container);}
-	span.appendChild(document.createTextNode(name));
+    var myScreen=false
+    var addElement=document.getElementById('participants');
+    var addSharing=document.getElementById('sharing-space');
+
+     if(isSharing){
+                console.log("sharing");
+                addElement.classList.remove("cam-container");
+                startButton.classList.add("is-hidden");
+                addElement.classList.add("sharing-cam-container");
+                span.classList.add="share-name";
+                console.log("hello");
+            for(var i=0;i<addSharing.children.length;i++){
+            console.log(addElement.children[i].id);
+            console.log(name);
+            if(addSharing.children[i].id===name){
+                myScreen=true;
+                    console.log(name.substring(0,name.length-8));
+            }
+
+            }
+            if(!myScreen){
+            span.appendChild(document.createTextNode(name.substring(0,name.length-8)+"의 공유화면"));
+
+            container.className="participant screen";
+            addSharing.appendChild(container);
+            }
+            }
+            else{
+            span.appendChild(document.createTextNode(name));
+            addElement.appendChild(container);
+            }
 
 	video.id = 'video-' + name;
 	video.autoplay = true;
@@ -62,18 +86,18 @@ function Participant(name) {
 		return video;
 	}
 
-	function switchContainerClass() {
-		if (container.className === PARTICIPANT_CLASS) {
-			var elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
-			elements.forEach(function(item) {
-					item.className = PARTICIPANT_CLASS;
-				});
-
-				container.className = PARTICIPANT_MAIN_CLASS;
-			} else {
-			container.className = PARTICIPANT_CLASS;
-		}
-	}
+//	function switchContainerClass() {//cam size change
+//		if (container.className === PARTICIPANT_CLASS) {
+//			var elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
+//			elements.forEach(function(item) {
+//					item.className = PARTICIPANT_CLASS;
+//				});
+//
+//				container.className = PARTICIPANT_MAIN_CLASS;
+//			} else {
+//			container.className = PARTICIPANT_CLASS;
+//		}
+//	}
 
 	function isPresentMainParticipant() {
 		return ((document.getElementsByClassName(PARTICIPANT_MAIN_CLASS)).length != 0);
@@ -106,6 +130,12 @@ function Participant(name) {
 	this.dispose = function() {
 		console.log('Disposing participant ' + this.name);
 		this.rtcPeer.dispose();
-		container.parentNode.removeChild(container);
+		if(isSharing){
+		    addSharing.innerHTML="";
+		    startButton.classList.remove("is-hidden");
+        }else{
+        container.parentNode.removeChild(container);
+        }
+
 	};
 }

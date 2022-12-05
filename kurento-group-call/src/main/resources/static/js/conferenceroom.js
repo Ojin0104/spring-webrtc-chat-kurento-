@@ -120,11 +120,11 @@ function register() {
 
     console.log(name)
     var chatPage=document.querySelector('#chat-page');
-    var screenSharing=document.querySelector('#screenSharing');
+    var startButton=document.querySelector('#startButton');
     /////////////추가 부분
     connectingElement.classList.add('hidden');
     chatPage.classList.remove('hidden');
-    screenSharing.classList.remove('hidden');
+    startButton.classList.remove('hidden');
 //    var socket = new SockJS('/ws');
 //    stompClient = Stomp.over(socket);
 //    stompClient.connect({}, onConnected, onError);
@@ -132,7 +132,7 @@ function register() {
 
 	document.getElementById('room-header').innerText = 'ROOM ' + room;
 	document.getElementById('join').style.display = 'none';
-	document.getElementById('room').style.display = 'block';
+	//document.getElementById('room').style.display = 'block';
 
 	var message = {
 		id : 'joinRoom',
@@ -154,7 +154,7 @@ function onNewSharing(request){
     console.log(isSharing);
     isSharing=true;
     console.log(isSharing);
-    screenSharing.classList.add('hidden');
+    startButton.classList.add("is-hidden");
     receiveVideo(request.name);
 }
 
@@ -178,7 +178,7 @@ function callResponse(message) {
 function onSharingExistingParticipants(message) {
 
     isSharing=true;
-    screenSharing.classList.add('hidden');
+    //startButton.classList.add("is-hidden");
 	var constraints = {
 		audio : true,
 
@@ -187,17 +187,35 @@ function onSharingExistingParticipants(message) {
 
 var options={}
     console.log(name + " sharing in room " + room);
-    	var participantss = new Participant(name+"_sharing");
-    	participants[name+"_sharing"] = participantss;
-    	var video = participantss.getVideoElement();
-//    if(name==="sharing"){
-        const screen = document.querySelector('#screenVideo');
 
+//
+
+
+        var container = document.createElement('div');
+
+
+        	container.id = name+"_sharing";
+        	var span = document.createElement('span');
+        	var screen = document.createElement('video');
+            span.classList.add="share-name";
+        	container.appendChild(screen);
+        	container.appendChild(span);
+        //	container.onclick = switchContainerClass;
+            screen.autoplay = true;
+            	screen.controls = false;
+        	document.getElementById('sharing-space').appendChild(container);
+        	span.appendChild(document.createTextNode("나의 공유화면"));
+            container.className="participant screen";
+
+            var participantss = new Participant(name+"_sharing",true);
+                	participants[name+"_sharing"] = participantss;
+                	var video = participantss.getVideoElement();
         //
 
           navigator.mediaDevices.getDisplayMedia(constraints)
               .then(function(stream){
                 screen.srcObject=stream;
+
               options = {
               	      videoStream: stream,
                       sendSource:'webcam',
@@ -211,12 +229,22 @@ var options={}
               		  }
               		  this.generateOffer (participantss.offerToReceiveVideo.bind(participantss));
               	});
+                stream.getVideoTracks()[0].addEventListener('ended', () => {
+                                //perform your task here
+                                    startButton.classList.remove("is-hidden");
+                                    screen.srcObject=null;
+                                    participantss.dispose();
+                                    sendMessage({
+                                    		id : 'leaveRoom'
+                                    	});
 
+                                 });
               });
+
         var videoid=name+"_sharing";
 
-        var delscreenvideo=document.getElementById(videoid);
-        delscreenvideo.classList.add('hidden');
+//        var delscreenvideo=document.getElementById(videoid);
+//        delscreenvideo.classList.add('hidden');
 }
 ///////
 function onExistingParticipants(message) {
@@ -228,7 +256,7 @@ function onExistingParticipants(message) {
 	};
 var options={}
     console.log(name + " registered in room " + room);
-    	var participant = new Participant(name);
+    	var participant = new Participant(name,false);
     	participants[name] = participant;
     	var video = participant.getVideoElement();
 //    if(name==="sharing"){
@@ -296,13 +324,17 @@ function leaveRoom() {
 	}
 
 	document.getElementById('join').style.display = 'block';
-	document.getElementById('room').style.display = 'none';
+	//document.getElementById('room').style.display = 'none';
 
 	ws.close();
 }
 
 function receiveVideo(sender) {
-	var participant = new Participant(sender);
+    var sharing=false;
+    if(sender.slice(-8)==="_sharing"){
+        sharing=true;
+    }
+	var participant = new Participant(sender,sharing);
 	participants[sender] = participant;
 	var video = participant.getVideoElement();
 
@@ -324,7 +356,8 @@ function receiveVideo(sender) {
 function onParticipantLeft(request) {
 	console.log('Participant ' + request.name + ' left');
 	/////추가
-	joinleftmsg(request,"left");
+	if(!participants[request.name].isSharing)
+	    joinleftmsg(request,"left");
     /////
 	var participant = participants[request.name];
 	participant.dispose();
@@ -337,9 +370,11 @@ function sendMessage(message) {
 	ws.send(jsonMessage);
 }
 function sendChat(event){
+if(document.getElementById('message').value!==""){
 var room = document.getElementById('roomName').value;
 var messageInput = document.querySelector('#message');
 var messageContent=messageInput.value.trim();
+document.getElementById('message').value="";
 var message = {
 		id : 'sendChat',
 		name : name,
@@ -350,6 +385,7 @@ var message = {
 	sendMessage(message);
 
 
+	}
 	event.preventDefault();
 }
 function receiveChat(message){
@@ -420,15 +456,15 @@ function joinleftmsg(message,type){
 
 
 
-    if (adapter.browserDetails.browser === 'chrome' &&
-        adapter.browserDetails.version >= 107) {
-      // See https://developer.chrome.com/docs/web-platform/screen-sharing-controls/
-      document.getElementById('options').style.display = 'block';
-    } else if (adapter.browserDetails.browser === 'firefox') {
-      // Polyfill in Firefox.
-      // See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
-      adapter.browserShim.shimGetDisplayMedia(window, 'screen');
-    }
+//    if (adapter.browserDetails.browser === 'chrome' &&
+//        adapter.browserDetails.version >= 107) {
+//      // See https://developer.chrome.com/docs/web-platform/screen-sharing-controls/
+//      document.getElementById('options').style.display = 'block';
+//    } else if (adapter.browserDetails.browser === 'firefox') {
+//      // Polyfill in Firefox.
+//      // See https://blog.mozilla.org/webrtc/getdisplaymedia-now-available-in-adapter-js/
+//      adapter.browserShim.shimGetDisplayMedia(window, 'screen');
+//    }
 //
 //    function handleSuccess(stream) {
 //    var room = document.getElementById('roomName').value;

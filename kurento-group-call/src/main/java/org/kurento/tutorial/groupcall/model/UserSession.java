@@ -159,7 +159,8 @@ public class UserSession implements Closeable {
           }
         }
       });
-
+      log.info("인코밍미디어추가");
+      log.info(sender.getName());
       incomingMedia.put(sender.getName(), incoming);
     }
 

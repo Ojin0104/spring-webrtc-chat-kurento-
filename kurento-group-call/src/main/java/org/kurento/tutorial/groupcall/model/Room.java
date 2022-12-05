@@ -133,6 +133,8 @@ public class Room implements Closeable {
   }
 
   private void removeParticipant(String name) throws IOException {
+    log.info(name);
+    boolean isSharing=participants.get(name).getIsSharing();
     participants.remove(name);
 
     log.debug("ROOM {}: notifying all users that {} is leaving the room", this.name, name);
@@ -144,8 +146,23 @@ public class Room implements Closeable {
     participantLeftJson.addProperty("content", "");
     for (final UserSession participant : participants.values()) {
       try {
-        participant.cancelVideoFrom(name);
-        participant.sendMessage(participantLeftJson);
+        log.info("dhkdkdkdkdk");
+        log.info(name);
+        log.info(participant.getName());
+
+        if(isSharing) {
+          if (participant.getName().equals(name.substring(0, name.length() - 8)))
+            log.info(participant.getName() + "공유 종료");
+          else {
+          participant.cancelVideoFrom(name);
+          participant.sendMessage(participantLeftJson);
+          log.info(participant.getName()+"공유화면 지우기");
+        }
+        }else{
+          participant.cancelVideoFrom(name);
+          participant.sendMessage(participantLeftJson);
+        }
+
       } catch (final IOException e) {
         unnotifiedParticipants.add(participant.getName());
       }
@@ -244,8 +261,8 @@ public void sendChat(String name,String text) throws IOException{
 
   for (final UserSession participant : participants.values()) {
     try {
-
-      participant.sendMessage(chatJson);
+      if (!participant.getIsSharing())//화면공유세션에게는 메시지 전달 x
+        participant.sendMessage(chatJson);
     } catch (final IOException e) {
       unnotifiedParticipants.add(participant.getName());
     }

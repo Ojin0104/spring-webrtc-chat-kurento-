@@ -6,10 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="2d17d190-447d-457a-8dd1-57600eb5ec31" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/CallHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/CallHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/model/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/model/UserSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/kurento/tutorial/groupcall/model/UserSession.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/conferenceroom.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/participant.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/participant.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/CallHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/CallHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/Room$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/Room$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/Room.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/Room.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/kurento/tutorial/groupcall/model/UserSession.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/static/js/conferenceroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/conferenceroom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/participant.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/participant.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../spring-boot-websocket-chat-demo" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-websocket-chat-demo" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

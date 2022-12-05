@@ -84,8 +84,12 @@ public class CallHandler extends TextWebSocketHandler {
         user.receiveVideoFrom(sender, sdpOffer);
         break;
       case "leaveRoom":
+        log.info(user.getName());
+        log.info("여기야여기야여기야");
         leaveRoom(user);
         break;
+
+
       case "onIceCandidate":
         JsonObject candidate = jsonMessage.get("candidate").getAsJsonObject();
 

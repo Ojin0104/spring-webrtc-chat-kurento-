@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -5,74 +6,86 @@
 
 
 </head>
-<body>
-	<div id="container">
-		<div id="wrapper">
-			<div id="join" class="animate join">
-				<h1>Join a Room</h1>
-				<form onsubmit="register(); return false;" accept-charset="UTF-8">
-					<p>
-						<input type="text" name="name" value="" id="name"
-							placeholder="Username" required>
-					</p>
-					<p>
-						<input type="text" name="room" value="" id="roomName"
-							placeholder="Room" required>
-					</p>
-					<p class="submit">
-						<input type="submit" name="commit" value="Join!">
-					</p>
-				</form>
-			</div>
-			<div id="room" style="display: none;">
-				<h2 id="room-header"></h2>
-				<div id="participants"></div>
-				<div id="sharingVideo">
-					<video id="screenVideo" autoplay playsinline muted></video>
-				</div>
-				<input type="button" id="button-leave" onmouseup="leaveRoom();"
-					value="Leave room">
-			</div>
-		</div>
-	</div>
-
-	<div id="chat-page" class="hidden">
-		<div class="chat-container">
-			<div class="chat-header">
-				<h2></h2>
-			</div>
-			<div class="connecting">
-				Connecting...
-			</div>
-			<ul id="messageArea">
-
-			</ul>
-			<form id="messageForm" name="messageForm" nameForm="messageForm">
-				<div class="form-group">
-					<div class="input-group clearfix">
-						<input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
-						<button type="submit" class="primary">Send</button>
-					</div>
-				</div>
+<body style="overflow:hidden;">
+		<div id="join" class="animate join">
+			<h1>Join a Room</h1>
+			<form onsubmit="register(); return false;" accept-charset="UTF-8">
+				<p>
+					<input type="text" name="name" value="" id="name"
+						   placeholder="Username" required>
+				</p>
+				<p>
+					<input type="text" name="room" value="" id="roomName"
+						   placeholder="Room" required>
+				</p>
+				<p class="submit">
+					<input type="submit" name="commit" value="Join!">
+				</p>
 			</form>
 		</div>
-	</div>
+		<h2 id="room-header"></h2>
+		<div id="wrapper">
 
-	<div id="screenSharing" class="hidden">
-		<h1><a title="WebRTC samples homepage">Screen Sharing</a> </h1>
 
-		<video id="shareVideo" autoplay playsinline muted></video>
-		<button id="startButton" disabled>Start</button>
-		<fieldset id="options" style="display:none">
-			<legend>Advanced options</legend>
-			<select id="displaySurface">
-				<option value="default" selected>Show default sharing options</option>
-				<option value="browser">Prefer to share a browser tab</option>
-				<option value="window">Prefer to share a window</option>
-				<option value="monitor">Prefer to share an entire screen</option>
-			</select>
-		</fieldset>
-		<div id="errorMsg"></div>
+			<div id="room" class="container">
+
+				<div id="video-container">
+				<div id="participants" class="cam-container"></div>
+				<div id="sharing-space" class="sharing-container"></div>
+					</div>
+			</div>
+
+
+
+				<div id="chat-page" class="hidden">
+
+
+
+					<div class="chat-container">
+						<div class="chat-header">
+							<button type="button" id="startButton" class="hidden" disabled>화면공유</button>
+							<input type="button" id="button-leave" onmouseup="leaveRoom();"value="Leave room">
+							<h2></h2>
+						</div>
+						<div class="connecting">
+							Connecting...
+						</div>
+						<ul id="messageArea">
+
+						</ul>
+						<form id="messageForm" name="messageForm" nameForm="messageForm">
+							<div class="form-group">
+								<div class="input-group clearfix">
+									<input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
+									<button id="sendButton" type="submit" class="primary">Send</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+				</div>
+
+
+		</div>
+
+
+
+
+
+
+
+
+
+<!--		<fieldset id="options" style="display:none">-->
+<!--			<legend>Advanced options</legend>-->
+<!--			<select id="displaySurface">-->
+<!--				<option value="default" selected>Show default sharing options</option>-->
+<!--				<option value="browser">Prefer to share a browser tab</option>-->
+<!--				<option value="window">Prefer to share a window</option>-->
+<!--				<option value="monitor">Prefer to share an entire screen</option>-->
+<!--			</select>-->
+<!--		</fieldset>-->
+<!--		<div id="errorMsg"></div>-->
 
 
 

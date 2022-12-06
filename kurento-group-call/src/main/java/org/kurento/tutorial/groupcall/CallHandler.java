@@ -56,7 +56,7 @@ public class CallHandler extends TextWebSocketHandler {
   public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
     final JsonObject jsonMessage = gson.fromJson(message.getPayload(), JsonObject.class);
 
-    final UserSession user = registry.getBySession(session);
+    UserSession user = registry.getBySession(session);
 
     if (user != null) {
       log.info("Incoming message from user '{}': {}", user.getName(), jsonMessage);
@@ -84,7 +84,12 @@ public class CallHandler extends TextWebSocketHandler {
         user.receiveVideoFrom(sender, sdpOffer);
         break;
       case "leaveRoom":
+        if(jsonMessage.has("sender")) {
+          user = registry.getByName(jsonMessage.get("sender").getAsString());
+          log.info(user.getName());
+        }
         log.info(user.getName());
+        //registry.removeByUser(user);
         log.info("여기야여기야여기야");
         leaveRoom(user);
         break;
@@ -106,8 +111,9 @@ public class CallHandler extends TextWebSocketHandler {
 
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-    UserSession user = registry.removeBySession(session);
-    roomManager.getRoom(user.getRoomName()).leave(user);
+//    UserSession user = registry.removeBySession(session);
+//    log.info("여기실행되나'");
+//    roomManager.getRoom(user.getRoomName()).leave(user);
   }
 
   private void joinRoom(JsonObject params, WebSocketSession session) throws IOException {
@@ -132,6 +138,7 @@ public class CallHandler extends TextWebSocketHandler {
   ////////////////
   private void leaveRoom(UserSession user) throws IOException {
     final Room room = roomManager.getRoom(user.getRoomName());
+
     room.leave(user);
     if (room.getParticipants().isEmpty()) {
       roomManager.removeRoom(room);

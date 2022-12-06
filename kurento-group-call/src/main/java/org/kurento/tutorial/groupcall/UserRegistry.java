@@ -59,5 +59,11 @@ public class UserRegistry {
     usersBySessionId.remove(session.getId());
     return user;
   }
+  public void removeByUser(UserSession user) {
+
+    usersByName.remove(user.getName());
+    usersBySessionId.remove(user.getSession().getId());
+
+  }
 
 }

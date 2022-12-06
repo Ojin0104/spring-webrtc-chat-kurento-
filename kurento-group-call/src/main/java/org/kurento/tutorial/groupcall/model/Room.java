@@ -134,6 +134,7 @@ public class Room implements Closeable {
 
   private void removeParticipant(String name) throws IOException {
     log.info(name);
+    log.info("확인");
     boolean isSharing=participants.get(name).getIsSharing();
     participants.remove(name);
 

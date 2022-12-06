@@ -40,7 +40,23 @@ document.getElementById('name').value=params.get('userName');
 
 }
 window.onbeforeunload = function() {//페이지벗어날때
+sendMessage({
+		id : 'leaveRoom',
+		sender:name
+	});
 
+
+
+	document.getElementById('join').style.display = 'block';
+	//document.getElementById('room').style.display = 'none';
+	if(participants[name+"_sharing"].isSharing){
+	sendMessage({
+    		id : 'leaveRoom',
+    		sender:name+"_sharing"
+    	});
+
+
+	}
 	ws.close();
 };
 
@@ -235,7 +251,8 @@ var options={}
                                     screen.srcObject=null;
                                     participantss.dispose();
                                     sendMessage({
-                                    		id : 'leaveRoom'
+                                    		id : 'leaveRoom',
+                                    		sender: name+"_sharing"
                                     	});
 
                                  });
@@ -316,7 +333,8 @@ var options={}
 
 function leaveRoom() {
 	sendMessage({
-		id : 'leaveRoom'
+		id : 'leaveRoom',
+		sender:name
 	});
 
 	for ( var key in participants) {

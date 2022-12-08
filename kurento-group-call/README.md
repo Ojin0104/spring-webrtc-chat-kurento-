@@ -11,6 +11,7 @@ kurento-FaceMeeting
 ==================
 
 SFU방식의 화상채팅으로 Kurento-media-server를 활용해 화면공유기능과 채팅기능을 추가한 코드입니다.
+
 전혀 모르는 사람도 따라만하면 사용하실 수 있습니다!
 
 # 1.kurento-media-server설치
@@ -85,13 +86,16 @@ Server: WebSocket++/0.7.0
 ```
 # 2.웹배포
 ## 1)해당 파일을 clone 한다.
+```
+https://github.com/Ojin0104/spring-webrtc-chat-kurento-.git
+```
+## 2)해당 디렉토리로 이동해서 실행한다.
+```
+mvn -U clean spring-boot:run -Dspring-boot.run.jvmArguments="-Dkms.url=ws://{외부IP}:8888/kurento"
+```
+외부IP는 kurento media server의 외부 IP이다.
+(웹배포 서버에도 maven깔려있어야함!)
 
-## 2)폴더 들어가서 ~~실행
-
-
-
-kurento-merdia-server 설정
-stun server 설정
 
 Support
 -------

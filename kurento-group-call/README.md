@@ -10,7 +10,76 @@ Copyright © 2013-2016 [Kurento]. Licensed under [Apache 2.0 License].
 kurento-group-call
 ==================
 
-Kurento Java Tutorial: WebRTC many to many video call.
+SFU방식의 화상채팅으로 Kurento-media-server를 활용해 화면공유기능과 채팅기능을 추가한 코드입니다.
+전혀 모르는 사람도 따라만하면 사용하실 수 있습니다!
+
+1.kurento-media-server설치
+
+https://doc-kurento.readthedocs.io/en/latest/user/installation.html#local-installation
+
+도커설치,로컬설치등 여러가지 설치방법이 있지만 본인은 로컬설치로 설치
+
+1)gnupg 설치
+
+sudo apt-get update ; sudo apt-get install --no-install-recommends \
+    gnupg
+
+2)kurento repository 추가
+
+# Import the Kurento repository signing key
+sudo apt-key adv \
+    --keyserver keyserver.ubuntu.com \
+    --recv-keys 234821A61B67740F89BFD669FC8A16625AFA7A83
+
+# Get Ubuntu version definitions
+source /etc/lsb-release
+
+# Add the repository to Apt
+sudo tee "/etc/apt/sources.list.d/kurento.list" >/dev/null <<EOF
+# Kurento Media Server - Release packages
+deb [arch=amd64] http://ubuntu.openvidu.io/6.18.0 $DISTRIB_CODENAME kms6
+EOF
+
+3)kms 설치
+
+sudo apt-get update ; sudo apt-get install --no-install-recommends \
+    kurento-media-server
+
+4)stun 서버 구축
+
+coturn 오픈소스 사용하여 구축
+블로그 참조
+
+5)kurento 서버와 stun서버 연결
+
+블로그참조
+
+6)Maven설치
+
+7)media-server 설치확인
+
+sudo service kurento-media-server start
+sudo service kurento-media-server stop
+
+
+curl \
+  --include \
+  --header "Connection: Upgrade" \
+  --header "Upgrade: websocket" \
+  --header "Host: 127.0.0.1:8888" \
+  --header "Origin: 127.0.0.1" \
+  http://127.0.0.1:8888/kurento
+  
+  입력후 아래와 같은 응답을 받으면 연결수신 중을 의미합니다.
+
+HTTP/1.1 500 Internal Server Error
+Server: WebSocket++/0.7.0
+
+2.웹배포
+1)해당 파일을 clone 한다.
+
+2)폴더 들어가서 ~~실행
+
 
 
 kurento-merdia-server 설정

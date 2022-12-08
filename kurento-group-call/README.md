@@ -52,14 +52,16 @@ sudo apt-get update ; sudo apt-get install --no-install-recommends \
 ```
 ## 4)stun 서버 구축
 
-coturn 오픈소스 사용하여 구축
-블로그 참조
+[coturn 오픈소스 사용하여 구축
+블로그 참조](https://velog.io/@ojin0104/coturn%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-stun-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95)
 
 ## 5)kurento 서버와 stun서버 연결
 
-블로그참조
+[블로그참조](https://velog.io/@ojin0104/kurento%EB%AF%B8%EB%94%94%EC%96%B4-%EC%84%9C%EB%B2%84%EC%97%90-turn%EC%84%9C%EB%B2%84-%EC%97%B0%EA%B2%B0%ED%95%98%EB%8A%94%EB%B2%95)
 
 ## 6)Maven설치
+
+kurento-media-server에 maven 설치되어있어야함!!
 
 ## 7)media-server 설치확인
 ```

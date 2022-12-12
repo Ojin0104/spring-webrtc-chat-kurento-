@@ -9,10 +9,14 @@ Copyright © 2013-2016 [Kurento]. Licensed under [Apache 2.0 License].
 
 kurento-FaceMeeting
 ==================
+![image](https://user-images.githubusercontent.com/81220859/206969941-47f31223-b2f4-44a3-946c-f8f751d28dc3.png)
+
 
 SFU방식의 화상채팅으로 Kurento-media-server를 활용해 화면공유기능과 채팅기능을 추가한 코드입니다.
 
 전혀 모르는 사람도 따라만하면 사용하실 수 있습니다!
+
+aws ec2 프리티어 기준으로 5명까지는 무리없이 진행이 되었고 10 명이 넘어가면 에러가 발생합니다.(서버를 scale up하면 해결될 것이라 생각)
 
 # 1.kurento-media-server설치
 

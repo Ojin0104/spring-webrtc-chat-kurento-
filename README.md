@@ -18,6 +18,8 @@ SFU방식의 화상채팅으로 Kurento-media-server를 활용해 화면공유�
 
 aws ec2 프리티어 기준으로 5명까지는 무리없이 진행이 되었고 10 명이 넘어가면 에러가 발생합니다.(서버를 scale up하면 해결될 것이라 생각)
 
+JAVA ,JAVASCRIPT,KURENTO,WEBSOCKET,WEBRTC 사용
+
 # 1.kurento-media-server설치
 
 https://doc-kurento.readthedocs.io/en/latest/user/installation.html#local-installation

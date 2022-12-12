@@ -140,13 +140,14 @@ function register() {
     /////////////추가 부분
     connectingElement.classList.add('hidden');
     chatPage.classList.remove('hidden');
+
     startButton.classList.remove('hidden');
 //    var socket = new SockJS('/ws');
 //    stompClient = Stomp.over(socket);
 //    stompClient.connect({}, onConnected, onError);
     ////////////추가부분
 
-	document.getElementById('room-header').innerText = 'ROOM ' + room;
+	//document.getElementById('room-header').innerText = 'ROOM ' + room;
 	document.getElementById('join').style.display = 'none';
 	//document.getElementById('room').style.display = 'block';
 
@@ -330,7 +331,13 @@ var options={}
 /////////////////////////
 
 /////////////////////
+function WinClose()
 
+ {
+
+   window.open('','_self').close();
+
+}
 function leaveRoom() {
 	sendMessage({
 		id : 'leaveRoom',
@@ -345,7 +352,8 @@ function leaveRoom() {
 	//document.getElementById('room').style.display = 'none';
 
 	ws.close();
-	window.close();
+	WinClose();
+
 }
 
 function receiveVideo(sender) {

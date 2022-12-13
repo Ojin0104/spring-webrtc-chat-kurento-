@@ -168,9 +168,9 @@ function onNewParticipant(request) {
 	receiveVideo(request.name);
 }
 function onNewSharing(request){
-    console.log(isSharing);
+
     isSharing=true;
-    console.log(isSharing);
+
     startButton.classList.add("is-hidden");
     receiveVideo(request.name);
 }
@@ -324,7 +324,7 @@ var options={}
 
 
 	joinleftmsg(message,"join");
-    console.log(message.data);
+
 	message.data.forEach(receiveVideo);
 }
 
@@ -482,7 +482,7 @@ function joinleftmsg(message,type){
     const startButton = document.getElementById('startButton');
 
 
-
+//화면공유 크롬아닐때
 //    if (adapter.browserDetails.browser === 'chrome' &&
 //        adapter.browserDetails.version >= 107) {
 //      // See https://developer.chrome.com/docs/web-platform/screen-sharing-controls/
@@ -596,6 +596,6 @@ function joinleftmsg(message,type){
 
 var messageForm = document.querySelector('#messageForm');
 
-    //usernameForm.addEventListener('submit', connect, true)
+
     messageForm.addEventListener('submit', sendChat, true)
-///////////////////추가된 부분
+

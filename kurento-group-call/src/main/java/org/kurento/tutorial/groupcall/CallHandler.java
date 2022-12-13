@@ -86,11 +86,9 @@ public class CallHandler extends TextWebSocketHandler {
       case "leaveRoom":
         if(jsonMessage.has("sender")) {
           user = registry.getByName(jsonMessage.get("sender").getAsString());
-          log.info(user.getName());
+
         }
-        log.info(user.getName());
-        //registry.removeByUser(user);
-        log.info("여기야여기야여기야");
+
         leaveRoom(user);
         break;
 
@@ -112,7 +110,7 @@ public class CallHandler extends TextWebSocketHandler {
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 //    UserSession user = registry.removeBySession(session);
-//    log.info("여기실행되나'");
+//
 //    roomManager.getRoom(user.getRoomName()).leave(user);
   }
 

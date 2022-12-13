@@ -36,11 +36,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.google.gson.JsonObject;
 
-/**
- *
- * @author Ivan Gracia (izanmail@gmail.com)
- * @since 4.3.1
- */
+
 public class UserSession implements Closeable {
 
   private static final Logger log = LoggerFactory.getLogger(UserSession.class);
@@ -130,7 +126,7 @@ public class UserSession implements Closeable {
     if (sender.getName().equals(name)) {
 
       log.info("PARTICIPANT {}: configuring loopback", this.name);
-      log.info(String.valueOf(outgoingMedia));
+
 
       return outgoingMedia;
     }
@@ -159,8 +155,7 @@ public class UserSession implements Closeable {
           }
         }
       });
-      log.info("인코밍미디어추가");
-      log.info(sender.getName());
+
       incomingMedia.put(sender.getName(), incoming);
     }
 

@@ -133,8 +133,7 @@ public class Room implements Closeable {
   }
 
   private void removeParticipant(String name) throws IOException {
-    log.info(name);
-    log.info("확인");
+
     boolean isSharing=participants.get(name).getIsSharing();
     participants.remove(name);
 
@@ -147,9 +146,6 @@ public class Room implements Closeable {
     participantLeftJson.addProperty("content", "");
     for (final UserSession participant : participants.values()) {
       try {
-        log.info("dhkdkdkdkdk");
-        log.info(name);
-        log.info(participant.getName());
 
         if(isSharing) {
           if (participant.getName().equals(name.substring(0, name.length() - 8)))

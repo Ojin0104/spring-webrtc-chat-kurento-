@@ -51,10 +51,9 @@ function Participant(name,isSharing) {
                 startButton.classList.add("is-hidden");
                 addElement.classList.add("sharing-cam-container");
                 span.classList.add="share-name";
-                console.log("hello");
+
             for(var i=0;i<addSharing.children.length;i++){
-            console.log(addElement.children[i].id);
-            console.log(name);
+
             if(addSharing.children[i].id===name){
                 myScreen=true;
                     console.log(name.substring(0,name.length-8));

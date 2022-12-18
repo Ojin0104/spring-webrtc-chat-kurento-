@@ -24,7 +24,7 @@ JAVA ,JAVASCRIPT,KURENTO,WEBSOCKET,WEBRTC 사용
 
 https://doc-kurento.readthedocs.io/en/latest/user/installation.html#local-installation
 
-도커설치,로컬설치등 여러가지 설치방법이 있지만 본인은 로컬설치로 설치
+도커설치,로컬설치등 여러가지 설치방법이 있지만 본인은 로컬설치로 설치(ubuntu18.04,16.04 사용가능)
 
 ## 1)gnupg 설치
 ```

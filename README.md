@@ -75,6 +75,7 @@ kurento-media-server에 maven 설치되어있어야함!!
 sudo service kurento-media-server start #시작
 sudo service kurento-media-server stop #멈춤
 ```
+8888포트 열어주기!!
 
 ```
 curl \
